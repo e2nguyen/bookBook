@@ -1,0 +1,13 @@
+<html>
+  <head>
+    {% if title %}
+    <title>bookBook: {{ title }}</title>
+    {% else %}
+    <title>Welcome to bookBook!</title>
+    {% endif %}
+  </head>
+  <body>
+    bookBook
+    <a href="{{ url_for('index') }}">Home</a>
+  </body>
+</html>
