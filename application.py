@@ -22,8 +22,9 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+# migrate = Migrate(app, db)
 
-#from app 
+
 import routes
 
 # @app.route("/")
