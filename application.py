@@ -25,7 +25,7 @@ db = scoped_session(sessionmaker(bind=engine))
 # migrate = Migrate(app, db)
 
 
-import routes
+import routes, models
 
 # @app.route("/")
 # def index():

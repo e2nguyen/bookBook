@@ -1,13 +1,14 @@
 from application import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import Column, Integer, String
 
-class User(UserMixin, db.Model):
+class User(UserMixin):
   __tablename__ = 'users'
-  id = db.Column(db.Integer, primary_key=True)
-  username = db.Column(db.String(32), index=True, unique=True)
-  email = db.Column(db.String(64), index=True, unique=True)
-  password_hash = db.Column(db.String(128))
+  id = Column(Integer, primary_key=True)
+  username = Column(String(32), index=True, unique=True)
+  email = Column(String(64), index=True, unique=True)
+  password_hash = Column(String(128))
   
   def __repr__(self):
     return '<User {}, email {}>'.format(self.username, self.email)
@@ -18,6 +19,6 @@ class User(UserMixin, db.Model):
   def check_password(self, password):
     return check_password_hash(self.password_hash, password)
 
-@login.user_loader
-def load_user(id):
-  return User.query.get(int(id))
+#@login.user_loader
+#def load_user(id):
+#  return User.query.get(int(id))
