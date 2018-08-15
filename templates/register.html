@@ -9,7 +9,7 @@
   <head></head>
   <h1>Register</h1>
   <form action="" method="post">
-    {{ form.hideen_tag() }}
+    {{ form.hidden_tag() }}
     <p>
       {{ form.username.label }}<br>
       {{ form.username(size=32) }}<br>
@@ -38,6 +38,6 @@
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
-    <p>{{ form.submit }}</p>
+    <p>{{ form.submit() }}</p>
   </form>
 {% endblock %}

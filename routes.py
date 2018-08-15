@@ -1,6 +1,7 @@
 from flask import flash, render_template, redirect, request, url_for 
 from application import app, db
 from flask_login import login_user, logout_user, current_user, login_required
+from forms import RegistrationForm
 from models import User
 
 @app.route('/')
@@ -21,7 +22,7 @@ def register():
     db.session.commit()
     flash("Congratulations, you're in!")
     return redirect(url_for('index')) ###### change url_for and below line
-  return render_template('index.html', title='Register', user=user)
+  return render_template('register.html', title='Register', form=form)
 
 #@app.route('/login', methods=['GET','POST'])
 #def login():

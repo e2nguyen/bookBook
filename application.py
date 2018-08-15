@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, session
-# from config import Config
+from config import Config
 from flask_login import LoginManager
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -16,6 +16,7 @@ if not os.getenv("DATABASE_URL"):
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config.from_object(Config)
 Session(app)
 
 # Set up database
@@ -26,7 +27,3 @@ db = scoped_session(sessionmaker(bind=engine))
 
 
 import routes, models
-
-# @app.route("/")
-# def index():
-#    return "Project 1: TODO"
