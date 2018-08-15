@@ -18,8 +18,8 @@ def register():
   if form.validate_on_submit():
     user = User(username=form.username.data, email=form.email.data)
     user.set_password(form.password.data)
-    db.session.add(user)
-    db.session.commit()
+    db.add(user)
+    db.commit()
     flash("Congratulations, you're in!")
     return redirect(url_for('index')) ###### change url_for and below line
   return render_template('register.html', title='Register', form=form)

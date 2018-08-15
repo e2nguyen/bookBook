@@ -1,14 +1,18 @@
-from application import db
+from application import Base
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String
 
-class User(UserMixin):
+class User(Base, UserMixin):
   __tablename__ = 'users'
   id = Column(Integer, primary_key=True)
   username = Column(String(32), index=True, unique=True)
   email = Column(String(64), index=True, unique=True)
   password_hash = Column(String(128))
+  
+  def __init__(self, username=None, email=None):
+    self.username = username
+    self.email = email
   
   def __repr__(self):
     return '<User {}, email {}>'.format(self.username, self.email)
