@@ -9,6 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 app = Flask(__name__)
+login = LoginManager(app)
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
