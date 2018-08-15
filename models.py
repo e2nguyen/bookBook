@@ -9,11 +9,11 @@ class User(Base, UserMixin):
   username = Column(String(32), index=True, unique=True)
   email = Column(String(64), index=True, unique=True)
   password_hash = Column(String(128))
-  
+  '''
   def __init__(self, username=None, email=None):
     self.username = username
     self.email = email
-  
+  '''
   def __repr__(self):
     return '<User {}, email {}>'.format(self.username, self.email)
 

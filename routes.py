@@ -1,8 +1,8 @@
 from flask import flash, render_template, redirect, request, url_for 
 from application import app, db
 from flask_login import login_user, logout_user, current_user, login_required
-from forms import RegistrationForm
-from models import User
+from forms import * 
+from models import *
 
 @app.route('/')
 @app.route('/index')
@@ -20,10 +20,22 @@ def register():
     user.set_password(form.password.data)
     db.add(user)
     db.commit()
-    flash("Congratulations, you're in!")
-    return redirect(url_for('index')) ###### change url_for and below line
+    flash("Congratulations, you're in {}!".format(user.username))
+    return redirect(url_for('index')) 
   return render_template('register.html', title='Register', form=form)
-
-#@app.route('/login', methods=['GET','POST'])
-#def login():
-  
+    
+@app.route('/login', methods=['GET','POST'])
+def login():
+  if current_user.is_authenticated:
+    return redirect(url_for('index')) 
+  form = LoginForm()
+  if form.validate_on_submit():
+    # Check if user is in the database
+    user = User.query.filter_by(username=form.username.data).first()
+    # If user doesn't exist or doesn't match password, error
+    if user is None or not user.check_password(form.password.data) :
+      flash('Incorrect username or password.')
+      return redirect(url_for('login'))
+    return redirect(url_for('index'))
+  return render_template('login.html', title='Login', form=form)
+      
