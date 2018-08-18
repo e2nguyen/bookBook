@@ -1,6 +1,5 @@
 import csv
 import os
-#import application 
 from application import db
 from models import *
 
