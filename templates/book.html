@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+<!--Uses variables: book, reviews-->
+{% block content %}
+<h1>{{ book.title }}</h1>
+<table>
+    <tr valign="top">
+       <td>Author: {{ book.author }} </td> 
+    </tr>
+    <tr valign="top">
+        <td>Publication Year: {{ book.year }} </td> 
+    </tr>
+    <tr valign="top">
+        <td>ISBN: {{ book.isbn }} </td> 
+    </tr>
+</table>
+<hr>
+<h1>Reviews</h1>
+{% for review in reviews %}
+    {% include '_review.html' %}
+{% endfor %}
+{% endblock %}

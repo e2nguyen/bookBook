@@ -22,7 +22,6 @@ def register():
     db.commit()
     flash("Congratulations, you're in {}!".format(user.username))
     return redirect(url_for('index')) 
-  return render_template('register.html', title='Register', form=form)
     
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -44,3 +43,16 @@ def login():
 def logout():
   logout_user()
   return redirect(url_for('index'))      
+
+#TESTING: remove later
+@app.route('/book/<id>')
+@login_required
+def book(id):
+    book = Book.query.get(int(id)) #change to get() later
+    if not book:
+      flash('No book!')
+    reviews = [
+        {'body': 'Test post #1'},
+        {'body': 'Test post #2'}
+    ]
+    return render_template('book.html', book=book, reviews=reviews)
