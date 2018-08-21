@@ -8,8 +8,11 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+# intialize Flask app and specify view for login form to 
+# override default 401 error
 app = Flask(__name__)
 login = LoginManager(app)
+login.login_view = 'login'
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):

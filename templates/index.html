@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Hi, {{ user.username }}!</h1>
+  {% if current_user.is_anonymous %}
+  <h1> Welcome to bookBook! Please login to search.</h1>
+  {% else %}
+  <h1>Hi, {{ current_user.username }}, let's look for a book together!</h1>
+
+  <br>
+  <form method="POST" action="" class="form-inline" name="search">
+    <input name="Search" list="book-search" class="form-control" type="text" placeholder="Enter the title, ISBN, or author" title="Search"> 
+  {% if name %}
+    <h1>{{ name }}</h1>
+  {% endif %}
+  </form>
+  {% endif %}
 {% endblock %}

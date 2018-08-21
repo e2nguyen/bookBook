@@ -1,14 +1,43 @@
-from flask import flash, render_template, redirect, request, url_for 
+from flask import flash, render_template, redirect, request, url_for, request 
 from application import app, db
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
 from models import *
+from sqlalchemy import or_
 
 @app.route('/')
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
+@login_required
 def index():
-  user = {'username': 'Erica'}
-  return render_template('index.html', title='Home', user=user)
+
+  if current_user.is_authenticated:
+    books = [
+              {
+                'id': 1,    
+                'isbn': '1234567890',
+                'title': 'Hi World',
+                'author': 'YOU',
+                'year': '2000'
+              },
+              {
+                'id': 2,
+                'isbn': '1234567891',
+                'title': 'Hello World',
+                'author': 'ME',
+                'year': '2000'
+              }
+            ]
+    if request.method == 'POST':
+      search_input = request.form.get("Search")
+      book = Book.query.filter(or_(Book.isbn == search_input, Book.title == search_input,
+                        Book.author == search_input)).first() 
+      if book: 
+        return redirect('book.html' + '/' + str(book.id))
+      else:  
+        flash("We couldn't find the book. Sorry about that. :<")
+  
+  return render_template('index.html', title='Home')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -41,6 +70,7 @@ def login():
   return render_template('login.html', title='Login', form=form)
 
 @app.route('/logout')
+@login_required       # precautionary step; shouldn't be necessary though bc
 def logout():
   logout_user()
-  return redirect(url_for('index'))      
+  return redirect(url_for('index'))
