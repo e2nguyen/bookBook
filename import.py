@@ -4,7 +4,7 @@ from application import db
 from models import *
 
 def main():
-  f = open('books.csv')
+  f = open('books2.csv')
   booksReader = csv.reader(f)
   for isbn, title, author, year in booksReader:
     book = Book(isbn=isbn,title=title,author=author,year=year)
