@@ -7,7 +7,7 @@
   <h1>Hi, {{ current_user.username }}, let's look for a book together!</h1>
 
   <br>
-  <form method="POST" action="" class="form-inline" name="search">
+  <form method="post" action="" class="form-inline" name="search">
     <input name="Search" list="book-search" class="form-control" type="text" placeholder="Enter the title, ISBN, or author" title="Search"> 
   {% if name %}
     <h1>{{ name }}</h1>

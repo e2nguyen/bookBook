@@ -5,34 +5,22 @@ from forms import *
 from models import *
 from sqlalchemy import or_
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-
   if current_user.is_authenticated:
-    books = [
-              {
-                'id': 1,    
-                'isbn': '1234567890',
-                'title': 'Hi World',
-                'author': 'YOU',
-                'year': '2000'
-              },
-              {
-                'id': 2,
-                'isbn': '1234567891',
-                'title': 'Hello World',
-                'author': 'ME',
-                'year': '2000'
-              }
-            ]
     if request.method == 'POST':
       search_input = request.form.get("Search")
       book = Book.query.filter(or_(Book.isbn == search_input, Book.title == search_input,
-                        Book.author == search_input)).first() 
+                                   Book.author == search_input)).first()
+      reviews = [
+        {'body': 'Test post #1'},
+        {'body': 'Test post #2'}
+      ]
+  
       if book: 
-        return redirect('book.html' + '/' + str(book.id))
+        return redirect(url_for('book', isbn=book.isbn))
       else:  
         flash("We couldn't find the book. Sorry about that. :<")
   
@@ -75,10 +63,10 @@ def logout():
   return redirect(url_for('index'))      
 
 #TESTING: remove later
-@app.route('/book/<id>')
+@app.route('/book/<isbn>', methods=['GET', 'POST', 'PUT'])
 @login_required
-def book(id):
-    book = Book.query.get(int(id)) #change to get() later
+def book(isbn):
+    book = Book.query.filter_by(isbn=isbn).first()
     if not book:
       flash('No book!')
     reviews = [
