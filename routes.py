@@ -63,7 +63,7 @@ def logout():
   return redirect(url_for('index'))      
 
 #TESTING: remove later
-@app.route('/book/<isbn>', methods=['GET', 'POST', 'PUT'])
+@app.route('/book/<isbn>') 
 @login_required
 def book(isbn):
     book = Book.query.filter_by(isbn=isbn).first()
