@@ -1,0 +1,20 @@
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.rating.label }} <br>
+        {{ form.rating }} <br>
+        {% for error in form.rating.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.body.label }}<br>
+        {{ form.body(cols=50, rows=4) }}<br>
+        {% for error in form.body.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>

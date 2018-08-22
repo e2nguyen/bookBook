@@ -1,7 +1,5 @@
 <!--Uses variables: review-->
-<table>
-        <tr valign="top">
-            
-            <td>{{ review.body }}</td>
-        </tr>
-</table>
+
+<tr valign="top">
+    <td>{{ review.user.username }} says: <br>{{ review.body }}</td>
+</tr>
