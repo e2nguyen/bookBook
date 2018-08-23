@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-<!--Uses variables: book, reviews-->
+<!--Uses variables: book, reviews, rating, num_ratings-->
 {% block content %}
 <h1>{{ book.title }}</h1>
 <table>
@@ -12,6 +12,9 @@
     </tr>
     <tr valign="top">
         <td>ISBN: {{ book.isbn }} </td> 
+    </tr>
+    <tr valign="top">
+        <td>Average Rating (out of {{ num_ratings }}): {{ rating }} </td>
     </tr>
 </table>
 <hr>
