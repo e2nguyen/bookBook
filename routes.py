@@ -36,6 +36,8 @@ def register():
     db.commit()
     flash("Congratulations, you're in {}!".format(user.username))
     return redirect(url_for('index')) 
+  return render_template('register.html', title='Register', form=form)
+
     
 @app.route('/login', methods=['GET','POST'])
 def login():
