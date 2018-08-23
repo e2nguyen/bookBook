@@ -14,8 +14,9 @@ def index():
   if current_user.is_authenticated:
     if request.method == 'POST':
       search_input = request.form.get("Search")
-      book = Book.query.filter(or_(Book.isbn == search_input, Book.title == search_input,
-                                   Book.author == search_input)).first()
+      book = Book.query.filter(or_(Book.isbn == search_input, 
+                                    Book.title == search_input,
+                                    Book.author == search_input)).first()
       if book: 
         return redirect(url_for('book', isbn=book.isbn))
       else:  
