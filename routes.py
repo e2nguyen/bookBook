@@ -1,3 +1,5 @@
+import requests
+
 from flask import flash, render_template, redirect, request, url_for, request 
 from application import app, db
 from flask_login import current_user, login_required, login_user, logout_user
@@ -64,8 +66,7 @@ def book(isbn):
     book = Book.query.filter_by(isbn=isbn).first()
     if not book:
       flash('No book!')
-    # retrieve reviews by most recent
-    reviews = book.reviews[::-1] 
+
     form = ReviewForm()
     if form.validate_on_submit():
       # does this user have a review for this book already?
@@ -81,4 +82,16 @@ def book(isbn):
         db.add(review)
         db.commit()
         flash("Thank you for your review, Big Bitch!")
-    return render_template('book.html', book=book, reviews=reviews, form=form)
+    
+    #get avg rating from goodreads
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", 
+                        params={"key": "wbYVNp1WvHbg0SdF1fCvoA", 
+                        "isbns": "9781632168146"})
+    # check if get request was successful
+    if res.status_code != 200:
+      raise Exception('ERROR: API request unsuccessful.')
+    data = res.json()
+    rating = data['books'][0]['average_rating']
+    num_ratings = data['books'][0]['work_ratings_count']              
+    return render_template('book.html', book=book, reviews=book.reviews[::-1],
+                            form=form, rating=rating, num_ratings=num_ratings)
