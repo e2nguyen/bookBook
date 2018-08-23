@@ -5,7 +5,7 @@ from application import app, db
 from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
 from models import *
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, and_, func
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -14,13 +14,15 @@ def index():
   if current_user.is_authenticated:
     if request.method == 'POST':
       search_input = request.form.get("Search")
-      book = Book.query.filter(or_(Book.isbn == search_input, 
-                                    Book.title == search_input,
-                                    Book.author == search_input)).first()
+      book = Book.query.filter(or_(
+                      func.lower(Book.isbn) == func.lower(search_input), 
+                      func.lower(Book.title) == func.lower(search_input),
+                      func.lower(Book.author) == func.lower(search_input))).first()
       if book: 
         return redirect(url_for('book', isbn=book.isbn))
       else:  
         flash("We couldn't find the book. Sorry about that. :<")
+        flash("%s %s" % (search_input))
   
   return render_template('index.html', title='Home')
 
