@@ -3,7 +3,7 @@ from application import app, db
 from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
 from models import *
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -14,11 +14,6 @@ def index():
       search_input = request.form.get("Search")
       book = Book.query.filter(or_(Book.isbn == search_input, Book.title == search_input,
                                    Book.author == search_input)).first()
-      reviews = [
-        {'body': 'Test post #1'},
-        {'body': 'Test post #2'}
-      ]
-  
       if book: 
         return redirect(url_for('book', isbn=book.isbn))
       else:  
@@ -63,14 +58,27 @@ def logout():
   return redirect(url_for('index'))      
 
 #TESTING: remove later
-@app.route('/book/<isbn>') 
+@app.route('/book/<isbn>', methods=['GET', 'POST']) 
 @login_required
 def book(isbn):
     book = Book.query.filter_by(isbn=isbn).first()
     if not book:
       flash('No book!')
-    reviews = [
-        {'body': 'Test post #1'},
-        {'body': 'Test post #2'}
-    ]
-    return render_template('book.html', book=book, reviews=reviews)
+    # retrieve reviews by most recent
+    reviews = book.reviews[::-1] 
+    form = ReviewForm()
+    if form.validate_on_submit():
+      # does this user have a review for this book already?
+      existing_review = Review.query.filter(and_(Review.user_id == current_user.id,
+                                      Review.book_id == book.id)).first()
+
+      # if never been reviewed, add the new review
+      if existing_review:
+         flash("You already reviewed this book. Stop being a lil' bitch.")
+      else:
+        review = Review(rating=form.rating.data, body=form.body.data, 
+                        user_id=current_user.id, book_id=book.id)
+        db.add(review)
+        db.commit()
+        flash("Thank you for your review, Big Bitch!")
+    return render_template('book.html', book=book, reviews=reviews, form=form)

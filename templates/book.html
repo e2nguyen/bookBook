@@ -16,7 +16,13 @@
 </table>
 <hr>
 <h1>Reviews</h1>
+<table>
 {% for review in reviews %}
     {% include '_review.html' %}
 {% endfor %}
+</table>
+<hr>
+<h3>Write Your Own Review, Bitch: </h3>
+{% include '_reviewForm.html' %}
+
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, TextAreaField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from models import User
 
 class RegistrationForm(FlaskForm):
@@ -27,3 +27,14 @@ class LoginForm(FlaskForm):
   remember_me = BooleanField('Remember Me')
   submit = SubmitField('Submit')
 
+class ReviewForm(FlaskForm):
+  rating = RadioField('Rating', choices=[('one','1'), 
+                                         ('two','2'),
+                                         ('three','3'), 
+                                         ('four','4'),
+                                         ('five','5')
+                                        ])
+  body = TextAreaField('Review', validators=[Length(min=0, max=500)])
+  submit = SubmitField('Submit')
+
+ 
