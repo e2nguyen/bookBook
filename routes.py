@@ -14,17 +14,28 @@ def index():
   if current_user.is_authenticated:
     if request.method == 'POST':
       search_input = request.form.get("Search")
-      book = Book.query.filter(or_(
-                      func.lower(Book.isbn) == func.lower(search_input), 
+      books = Book.query.filter(or_(
+                      Book.isbn.ilike("%" + search_input + "%"),
+                      Book.title.ilike("%" + search_input + "%"),
+                      Book.author.ilike("%" + search_input + "%"))).all()
+      if len(books) == 1: 
+        # if the search_input is an exact match, go directly book page
+        book = Book.query.filter(or_(
+                      func.lower(Book.isbn) == func.lower(search_input),
                       func.lower(Book.title) == func.lower(search_input),
                       func.lower(Book.author) == func.lower(search_input))).first()
-      if book: 
-        return redirect(url_for('book', isbn=book.isbn))
-      else:  
-        flash("We couldn't find the book. Sorry about that. :<")
-        flash("%s %s" % (search_input))
-  
-  return render_template('index.html', title='Home')
+        if book: 
+          return redirect(url_for('book', isbn=book.isbn))
+        # if search_input is not exact match, show list of potential books
+        else:
+          return render_template('index.html', title='Home', books=books)
+      # if no books were found, print error message
+      elif len(books) == 0:  
+        flash("We couldn't find {}. Sorry about that. :<".format(search_input))
+      # if multiple books found, show list of potential books
+      else:
+        return render_template('index.html', title='Home', books=books)
+  return render_template('index.html', title='Home', books=None)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -68,35 +79,36 @@ def logout():
 @app.route('/book/<isbn>', methods=['GET', 'POST']) 
 @login_required
 def book(isbn):
-    book = Book.query.filter_by(isbn=isbn).first()
-    if not book:
-      flash('No book!')
+  book = Book.query.filter_by(isbn=isbn).first()
+  if not book:
+    flash('No book!')
+    return redirect(url_for('index')) 
 
-    form = ReviewForm()
-    if form.validate_on_submit():
-      # does this user have a review for this book already?
-      existing_review = Review.query.filter(and_(Review.user_id == current_user.id,
-                                      Review.book_id == book.id)).first()
+  form = ReviewForm()
+  if form.validate_on_submit():
+    # does this user have a review for this book already?
+    existing_review = Review.query.filter(and_(Review.user_id == current_user.id,
+                                    Review.book_id == book.id)).first()
 
-      # if never been reviewed, add the new review
-      if existing_review:
-         flash("You already reviewed this book. Stop being a lil' bitch.")
-      else:
-        review = Review(rating=form.rating.data, body=form.body.data, 
-                        user_id=current_user.id, book_id=book.id)
-        db.add(review)
-        db.commit()
-        flash("Thank you for your review, Big Bitch!")
-    
-    #get avg rating from goodreads
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", 
-                        params={"key": "wbYVNp1WvHbg0SdF1fCvoA", 
-                        "isbns": "9781632168146"})
-    # check if get request was successful
-    if res.status_code != 200:
-      raise Exception('ERROR: API request unsuccessful.')
-    data = res.json()
-    rating = data['books'][0]['average_rating']
-    num_ratings = data['books'][0]['work_ratings_count']              
-    return render_template('book.html', book=book, reviews=book.reviews[::-1],
-                            form=form, rating=rating, num_ratings=num_ratings)
+    # if never been reviewed, add the new review
+    if existing_review:
+        flash("You already reviewed this book. Stop being a lil' bitch.")
+    else:
+      review = Review(rating=form.rating.data, body=form.body.data, 
+                      user_id=current_user.id, book_id=book.id)
+      db.add(review)
+      db.commit()
+      flash("Thank you for your review, Big Bitch!")
+  
+  #get avg rating from goodreads
+  res = requests.get("https://www.goodreads.com/book/review_counts.json", 
+                      params={"key": "wbYVNp1WvHbg0SdF1fCvoA", 
+                      "isbns": "9781632168146"})
+  # check if get request was successful
+  if res.status_code != 200:
+    raise Exception('ERROR: API request unsuccessful.')
+  data = res.json()
+  rating = data['books'][0]['average_rating']
+  num_ratings = data['books'][0]['work_ratings_count']              
+  return render_template('book.html', book=book, reviews=book.reviews[::-1],
+                          form=form, rating=rating, num_ratings=num_ratings)
