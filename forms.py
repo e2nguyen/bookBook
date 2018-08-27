@@ -28,12 +28,12 @@ class LoginForm(FlaskForm):
   submit = SubmitField('Submit')
 
 class ReviewForm(FlaskForm):
-  rating = RadioField('Rating', choices=[('one','1'), 
-                                         ('two','2'),
-                                         ('three','3'), 
-                                         ('four','4'),
-                                         ('five','5')
-                                        ])
+  rating = RadioField('Rating', coerce=int, choices=[ (1,'1'), 
+                                                      (2,'2'),
+                                                      (3,'3'), 
+                                                      (4,'4'),
+                                                      (5,'5')
+                                                    ])
   body = TextAreaField('Review', validators=[Length(min=0, max=500)])
   submit = SubmitField('Submit')
 
