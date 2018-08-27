@@ -116,7 +116,6 @@ def book(isbn):
 
 # method for api access
 @app.route('/api/<isbn>')
-@login_required
 def access(isbn):
   book = Book.query.filter_by(isbn=isbn).first()
   if not book:
@@ -142,11 +141,10 @@ def access(isbn):
   review_count = num_ratings + len(ratings)
   
   average_score = round((((gr_rating * num_ratings) + bookavg)/review_count), 2)
-  return Response(json.dumps({
+  return jsonify({
                 "title":  book.title,
                 "author": book.author,
                 "year": book.year,
                 "book": isbn,
                 "review_count": review_count,
-                "average_score": average_score
-                }), mimetype='application/json')
+                "average_score": average_score})
