@@ -1,11 +1,12 @@
 import requests
 
-from flask import flash, render_template, redirect, request, url_for, request 
+from flask import flash, jsonify, make_response, render_template, redirect, request, url_for, request, Response 
 from application import app, db
 from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
 from models import *
 from sqlalchemy import or_, and_, func
+import json
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -22,7 +23,6 @@ def index():
         return redirect(url_for('book', isbn=book.isbn))
       else:  
         flash("We couldn't find the book. Sorry about that. :<")
-        flash("%s %s" % (search_input))
   
   return render_template('index.html', title='Home')
 
@@ -59,44 +59,81 @@ def login():
   return render_template('login.html', title='Login', form=form)
 
 @app.route('/logout')
-@login_required       # precautionary step; shouldn't be necessary though bc
+@login_required       # pecautionary step; shouldn't be necessary though bc
 def logout():
   logout_user()
   return redirect(url_for('index'))      
 
-#TESTING: remove later
 @app.route('/book/<isbn>', methods=['GET', 'POST']) 
 @login_required
 def book(isbn):
-    book = Book.query.filter_by(isbn=isbn).first()
-    if not book:
-      flash('No book!')
+  book = Book.query.filter_by(isbn=isbn).first()
+  if not book:
+    flash('No book!')
 
-    form = ReviewForm()
-    if form.validate_on_submit():
-      # does this user have a review for this book already?
-      existing_review = Review.query.filter(and_(Review.user_id == current_user.id,
-                                      Review.book_id == book.id)).first()
+  form = ReviewForm()
+  if form.validate_on_submit():
+    # does this user have a review for this book already?
+    existing_review = Review.query.filter(and_(Review.user_id == current_user.id,
+                                                Review.book_id == book.id)).first()
 
-      # if never been reviewed, add the new review
-      if existing_review:
-         flash("You already reviewed this book. Stop being a lil' bitch.")
-      else:
-        review = Review(rating=form.rating.data, body=form.body.data, 
-                        user_id=current_user.id, book_id=book.id)
-        db.add(review)
-        db.commit()
-        flash("Thank you for your review, Big Bitch!")
-    
-    #get avg rating from goodreads
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", 
-                        params={"key": "wbYVNp1WvHbg0SdF1fCvoA", 
-                        "isbns": "9781632168146"})
-    # check if get request was successful
-    if res.status_code != 200:
-      raise Exception('ERROR: API request unsuccessful.')
-    data = res.json()
-    rating = data['books'][0]['average_rating']
-    num_ratings = data['books'][0]['work_ratings_count']              
-    return render_template('book.html', book=book, reviews=book.reviews[::-1],
-                            form=form, rating=rating, num_ratings=num_ratings)
+    # if never been reviewed, add the new review
+    if existing_review:
+       flash("You already reviewed this book. Stop being a lil' bitch.")
+    else:
+      review = Review(rating=form.rating.data, body=form.body.data, 
+                      user_id=current_user.id, book_id=book.id)
+      db.add(review)
+      db.commit()
+      flash("Thank you for your review, Big Bitch!")
+  
+  # get avg rating from goodreads
+  res = requests.get("https://www.goodreads.com/book/review_counts.json", 
+                      params={"key": "wbYVNp1WvHbg0SdF1fCvoA", 
+                      "isbns": isbn})
+  # check if get request was successful
+  if res.status_code != 200:
+    raise Exception('ERROR: API request unsuccessful.')
+  data = res.json()
+  rating = data['books'][0]['average_rating']
+  num_ratings = data['books'][0]['work_ratings_count']              
+  return render_template('book.html', book=book, reviews=book.reviews[::-1],
+                          form=form, rating=rating, num_ratings=num_ratings)
+
+
+# method for api access
+@app.route('/api/<isbn>')
+@login_required
+def access(isbn):
+  book = Book.query.filter_by(isbn=isbn).first()
+  if not book:
+    return jsonify({"error": "invalid isbn"}), 404
+    #flash('No book!')
+    #return redirect(url_for('index'))
+
+  # get summed ratings from bookBook
+  ratings = [rev.rating for rev in Review.query.filter_by(book_id=book.id).all()]  
+  bookavg = sum(ratings)
+  # get avg rating from goodreads
+  goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", 
+                      params={"key": "wbYVNp1WvHbg0SdF1fCvoA", 
+                      "isbns": isbn})
+
+  # check if get request was successful
+  if goodreads.status_code != 200:
+    raise Exception('ERROR: API request unsuccessful.')
+
+  data = goodreads.json()
+  gr_rating = float(data['books'][0]['average_rating'])
+  num_ratings = int(data['books'][0]['work_ratings_count'])              
+  review_count = num_ratings + len(ratings)
+  
+  average_score = round((((gr_rating * num_ratings) + bookavg)/review_count), 2)
+  return Response(json.dumps({
+                "title":  book.title,
+                "author": book.author,
+                "year": book.year,
+                "book": isbn,
+                "review_count": review_count,
+                "average_score": average_score
+                }), mimetype='application/json')
