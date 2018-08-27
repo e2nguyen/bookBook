@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import JSON
 
 class User(Base, UserMixin):
   __tablename__ = 'users'
@@ -31,21 +32,21 @@ def load_user(id):
   return User.query.get(int(id))
 
 class Book(Base):
-  __tablename__ = 'books2'
+  __tablename__ = 'books4'
   id = Column(Integer, primary_key=True)
   isbn = Column(String(20))
   title = Column(String(100))
   author = Column(String(100))
   year = Column(String(4))
-  reviews = relationship('Review', backref='books2', lazy='dynamic')
+  reviews = relationship('Review', backref='books4', lazy='dynamic')
 
   def __repr__(self):
     return '<title: {}, author: {}>'.format(self.title, self.author)
 
 class Review(Base):
-  __tablename__='reviews'
+  __tablename__='reviewsInt'
   id = Column(Integer, primary_key=True)
-  rating = Column(String(10))
+  rating = Column(Integer)
   body = Column(String(500))
   user_id = Column(Integer, ForeignKey('users.id'))
-  book_id = Column(Integer, ForeignKey('books2.id'))
+  book_id = Column(Integer, ForeignKey('books4.id'))
