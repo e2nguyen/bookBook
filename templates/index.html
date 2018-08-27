@@ -9,9 +9,15 @@
   <br>
   <form method="post" action="" class="form-inline" name="search">
     <input name="Search" list="book-search" class="form-control" type="text" placeholder="Enter the title, ISBN, or author" title="Search"> 
-  {% if name %}
-    <h1>{{ name }}</h1>
-  {% endif %}
   </form>
+  {% if books %}
+    <hr>
+    <h3>Did you mean...</h3>
+    <table>
+    {% for book in books %}
+      {% include '_bookTeaser.html' %}
+    {% endfor %}
+    </table>
+  {% endif %}
   {% endif %}
 {% endblock %}

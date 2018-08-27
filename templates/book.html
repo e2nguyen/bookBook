@@ -5,7 +5,11 @@
 <h1>{{ book.title }}</h1>
 <table>
     <tr valign="top">
-       <td>Author: {{ book.author }} </td> 
+        {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
+        <td><img src="{{ book_url|join }}"></td>
+    </tr>
+    <tr valign="top">
+        <td>Author: {{ book.author }} </td> 
     </tr>
     <tr valign="top">
         <td>Publication Year: {{ book.year }} </td> 
@@ -22,6 +26,8 @@
 <table>
 {% for review in reviews %}
     {% include '_review.html' %}
+{% else %}
+    <p>Be the first to review this book!</p>
 {% endfor %}
 </table>
 <hr>

@@ -15,16 +15,28 @@ def index():
   if current_user.is_authenticated:
     if request.method == 'POST':
       search_input = request.form.get("Search")
-      book = Book.query.filter(or_(
-                      func.lower(Book.isbn) == func.lower(search_input), 
+      books = Book.query.filter(or_(
+                      Book.isbn.ilike("%" + search_input + "%"),
+                      Book.title.ilike("%" + search_input + "%"),
+                      Book.author.ilike("%" + search_input + "%"))).all()
+      if len(books) == 1: 
+        # if the search_input is an exact match, go directly book page
+        book = Book.query.filter(or_(
+                      func.lower(Book.isbn) == func.lower(search_input),
                       func.lower(Book.title) == func.lower(search_input),
                       func.lower(Book.author) == func.lower(search_input))).first()
-      if book: 
-        return redirect(url_for('book', isbn=book.isbn))
-      else:  
-        flash("We couldn't find the book. Sorry about that. :<")
-  
-  return render_template('index.html', title='Home')
+        if book: 
+          return redirect(url_for('book', isbn=book.isbn))
+        # if search_input is not exact match, show list of potential books
+        else:
+          return render_template('index.html', title='Home', books=books)
+      # if no books were found, print error message
+      elif len(books) == 0:  
+        flash("We couldn't find {}. Sorry about that. :<".format(search_input))
+      # if multiple books found, show list of potential books
+      else:
+        return render_template('index.html', title='Home', books=books)
+  return render_template('index.html', title='Home', books=None)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -70,12 +82,13 @@ def book(isbn):
   book = Book.query.filter_by(isbn=isbn).first()
   if not book:
     flash('No book!')
+    return redirect(url_for('index')) 
 
   form = ReviewForm()
   if form.validate_on_submit():
     # does this user have a review for this book already?
     existing_review = Review.query.filter(and_(Review.user_id == current_user.id,
-                                                Review.book_id == book.id)).first()
+                                               Review.book_id == book.id)).first()
 
     # if never been reviewed, add the new review
     if existing_review:
