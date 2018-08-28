@@ -2,25 +2,19 @@
 
 <!--Uses variables: book, reviews, rating, num_ratings-->
 {% block content %}
-<h1>{{ book.title }}</h1>
-<table>
-    <tr valign="top">
-        {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
-        <td><img src="{{ book_url|join }}"></td>
-    </tr>
-    <tr valign="top">
-        <td>Author: {{ book.author }} </td> 
-    </tr>
-    <tr valign="top">
-        <td>Publication Year: {{ book.year }} </td> 
-    </tr>
-    <tr valign="top">
-        <td>ISBN: {{ book.isbn }} </td> 
-    </tr>
-    <tr valign="top">
-        <td>Average Rating (out of {{ num_ratings }}): {{ rating }} </td>
-    </tr>
-</table>
+<div class="media">
+    {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
+    <span class="media-left">
+        <img src="{{ book_url|join }}">
+    </span>
+    <div class="media-body">
+        <h1>{{ book.title }}</h1>
+        <h3>by {{ book.author }}</h3> 
+        <p>Publication Year: {{ book.year }} </p>
+        <p>ISBN: {{ book.isbn }} </p>   
+        <p>Average Rating (out of {{ num_ratings }}): {{ rating }} </p>
+    </div>
+</div>
 <hr>
 <h1>Reviews</h1>
 <table>
