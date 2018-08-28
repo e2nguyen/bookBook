@@ -1,7 +1,21 @@
-body h1 {
+.login h1 {
   color: pink;
 }
 
 img {
   padding: 25px;
 }
+
+div.login {
+  top: 25%;
+  left: 35%;
+  margin: auto;
+  height: 350px;
+  text-align: center;
+  width: 350px;
+  box-sizing: border-box;
+  border: 10px solid aliceblue;
+}
+
+/*@media sadness
+*/
