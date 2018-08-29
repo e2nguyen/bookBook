@@ -1,5 +1,15 @@
 <!--Uses variables: review-->
 
-<tr valign="top">
-    <td>{{ review.user.username }} says: <br>{{ review.body }}</td>
+<tr>
+    <td>
+        <a href="{{ url_for('user', username=review.user.username) }}">
+            <img src="{{ review.user.avatar(36) }}">
+        </a>
+    </td>
+    <td>
+        <a href="{{ url_for('user', username=review.user.username) }}">
+            {{ review.user.username }}
+        </a>
+        says: <br>{{ review.body }}
+    </td>
 </tr>

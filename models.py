@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import JSON
+from hashlib import md5
 
 class User(Base, UserMixin):
   __tablename__ = 'users'
@@ -13,11 +14,6 @@ class User(Base, UserMixin):
   password_hash = Column(String(128))
   reviews = relationship('Review', backref='user', lazy='dynamic')
 
-  '''
-  def __init__(self, username=None, email=None):
-    self.username = username
-    self.email = email
-  '''
   def __repr__(self):
     return '<user: {}, email: {}>'.format(self.username, self.email)
 
@@ -26,6 +22,11 @@ class User(Base, UserMixin):
 
   def check_password(self, password):
     return check_password_hash(self.password_hash, password)
+
+  def avatar(self, size):
+    digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+    return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+        digest, size)
 
 @login.user_loader
 def load_user(id):

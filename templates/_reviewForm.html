@@ -1,8 +1,11 @@
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.rating.label }} <br>
-        {{ form.rating }} <br>
+        <span class="rating">
+            {% for star in form.rating %} 
+                {{ star }}   
+            {% endfor %}
+        </span>
         {% for error in form.rating.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}

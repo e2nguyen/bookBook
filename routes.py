@@ -1,6 +1,6 @@
 import requests
 
-from flask import flash, jsonify, make_response, render_template, redirect, request, url_for, request, Response 
+from flask import flash, jsonify, make_response, render_template, redirect, request, url_for, abort 
 from application import app, db
 from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
@@ -148,3 +148,11 @@ def access(isbn):
                 "book": isbn,
                 "review_count": review_count,
                 "average_score": average_score})
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+      abort(404)
+    return render_template('user.html', user=user, reviews=user.reviews)

@@ -1,6 +1,6 @@
 <!--Uses variables: book-->
 
-<tr valign="top">
+<tr>
     <td>
         {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-S.jpg"] %}
         <a href="{{ url_for('book', isbn=book.isbn) }}">
