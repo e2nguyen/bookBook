@@ -104,3 +104,98 @@ input[name="Search"] {
 @media only screen and (min-width: 1200px) {
 
 }
+.book img{
+  padding: 25px;
+}
+
+.rating {
+  float: left; 
+  transform: rotateY(180deg);
+  margin-left: 25px;
+  margin-top: -10px;
+}
+.rating input {
+  display: none;
+}
+
+.rating label {
+  display: inline-block;
+  cursor: pointer;
+  width: 20px;
+}
+
+.rating label:before {
+  content: "\f005";
+  font-family: "Font Awesome 5 Free";
+  position: relative;
+  display: block;
+  font-size: 20px;
+  color: #101010;
+  font-weight: 900; 
+}
+
+.rating label:after {
+  content: "\f005";
+  font-family: "Font Awesome 5 Free";
+  position: absolute;
+  display: block;
+  font-size: 20px;
+  color:orange;
+  top: 0;
+  opacity: 0;
+  transition: .5s;
+  text-shadow: 0 2px 5px rgba(0,0,0.5);
+  font-weight: 900;
+}
+
+.rating label:hover:after,
+.rating label:hover ~ label:after,
+.rating input:checked ~ label:after {
+  opacity: 1;
+}
+
+.clear { 
+  clear:both; 
+}
+
+blockquote {
+  color: lightskyblue;
+  font-style: italic;
+  border-left: none;
+}
+
+blockquote h4 {
+  font-style: initial;
+  font-weight: 550;
+}
+
+.user img {
+  border-radius: 50%;
+  padding: 25px;
+}
+
+.review img {
+  padding: 10px;
+}
+
+a { 
+  color: inherit; 
+} 
+
+.review-form {
+  padding: .25% 3%;
+}
+
+.checked {
+  color: orange;
+}
+
+.unchecked {
+  color: black;
+}
+
+.fa-star {
+  font-size: 15px;
+}
+/*@media sadness
+*/
