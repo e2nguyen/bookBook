@@ -2,20 +2,22 @@
 
 <!--Uses variables: user, posts-->
 {% block content %}
-<div class="user">
-    <table>
-        <tr valign="top">
-            <td><img src="{{ user.avatar(128) }}"></td>
-            <td><h1>User: {{ user.username }}</h1></td>
-        </tr>
-    </table>
-    <hr>
-    <table>
-        {% for review in reviews %}
-            {% include '_review.html' %}
-        {% else %}
-            <p>No reviews yet!</p>
-        {% endfor %}
-    </table>
+<div class="media user">
+    <span class="media-left">
+        <img src="{{ user.avatar(128) }}">
+    </span>
+    <div class="media-body">
+        <h1>{{ user.username }}</h1>
+    </div>
+</div>
+<hr>
+<div class="media review">
+    <h3>Your Reviews:</h3>
+    {% set onUserPage = True %}
+    {% for review in reviews %}
+        {% include '_review.html' %}
+    {% else %}
+        <p>No reviews yet!</p>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -2,7 +2,7 @@
 
 <!--Uses variables: book, reviews, rating, num_ratings-->
 {% block content %}
-<div class="media">
+<div class="media book">
     {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
     <span class="media-left">
         <img src="{{ book_url|join }}">
@@ -16,16 +16,19 @@
     </div>
 </div>
 <hr>
-<h3>Reviews</h3>
-<table>
-{% for review in reviews %}
-    {% include '_review.html' %}
-{% else %}
-    <p>Be the first to review this book!</p>
-{% endfor %}
-</table>
-<hr>
-<h3>Write Your Own Review, Bitch: </h3>
-{% include '_reviewForm.html' %}
 
+<div class="media review">
+    <h3>Reviews</h3>
+    {% set onBookPage = True %}
+    {% for review in reviews %}
+        {% include '_review.html' %}
+    {% else %}
+        <p>Be the first to review this book!</p>
+    {% endfor %}
+</div>
+<hr>
+<div class="review-form">
+    <h3>Write Your Own Review, Bitch: </h3>
+    {% include '_reviewForm.html' %}
+</div>
 {% endblock %}
