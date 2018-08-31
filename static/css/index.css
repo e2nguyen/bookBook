@@ -1,17 +1,106 @@
 .login h1 {
   color: pink;
+  letter-spacing: 0.1em;
 }
 
-div.login {
-  top: 25%;
-  left: 35%;
-  margin: auto;
-  height: 350px;
+.index-all {
+  padding-top: 5%;
+}
+
+.welcome, #did-you-mean {
+  color: grey;
+}
+
+body {
+  background-color: rgb(255, 223, 211)!important;
+}
+
+input[type=submit] {
+  border-radius: 6%;
+  letter-spacing: 0.4em;
+  color: pink;
+  background: none;
+  border: 3.3px solid rgba(0,0,0, 35%);
+}
+
+.welcome, .login, .index {
   text-align: center;
+}
+
+h2.welcome {
+  display: none;
+}
+
+.index form {
+  width: 710px;  
+  margin: 0 auto;
+}
+
+.login {
+  margin: 5% auto;
+  height: 350px;
+  border-radius: 00px;
   width: 350px;
   box-sizing: border-box;
-  border: 10px solid aliceblue;
+  background-color: rgba(0,0,0,40%); 
+  border: 3.3px solid rgba(0,0,0, 35%);
 }
 
-/*@media sadness
-*/
+button {
+  border: none;
+  background: none;
+}
+
+.fa-search::before {
+  color: #ce93d8;
+  content: "\f002";
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+}
+
+input[name="Search"] {
+  min-width: 650px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  input[type=text], input[type=password] {
+    box-sizing : border-box;
+  }
+  
+  html, body {
+    padding-top: 15%;
+    width: auto!important;
+    overflow-x: hidden!important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+}
+
+@media only screen and (min-width: 601px) and (max-width: 768) {
+
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+} 
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  html {
+    padding-top: 10%;
+  }
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+} 
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
