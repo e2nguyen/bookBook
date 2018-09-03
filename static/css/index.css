@@ -63,47 +63,6 @@ input[name="Search"] {
   min-width: 650px;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  input[type=text], input[type=password] {
-    box-sizing : border-box;
-  }
-  
-  html, body {
-    padding-top: 15%;
-    width: auto!important;
-    overflow-x: hidden!important;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-}
-
-@media only screen and (min-width: 601px) and (max-width: 768) {
-
-} 
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-
-} 
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  html {
-    padding-top: 10%;
-  }
-} 
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-
-} 
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-
-}
 .book img{
   padding: 25px;
 }
@@ -154,8 +113,16 @@ input[name="Search"] {
   opacity: 1;
 }
 
+table {
+  margin: 0 auto;
+}
+
+td {
+  padding: 10px;
+}
+
 .clear { 
-  clear:both; 
+  clear: both; 
 }
 
 blockquote {
@@ -197,5 +164,45 @@ a {
 .fa-star {
   font-size: 15px;
 }
-/*@media sadness
-*/
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  input[type=text], input[type=password] {
+    box-sizing : border-box;
+  }
+  
+  html, body {
+    padding-top: 15%;
+    width: auto!important;
+    overflow-x: hidden!important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+}
+
+@media only screen and (min-width: 601px) and (max-width: 768) {
+
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+} 
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  html {
+    padding-top: 10%;
+  }
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+} 
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
