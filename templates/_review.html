@@ -1,38 +1,38 @@
 <!--Uses variables: review-->
 <span class="media-left">
-    {% if onBookPage %} <!--show user avatar-->
+  {% if onBookPage %} <!--show user avatar-->
     <a class="user" href="{{ url_for('user', username=review.user.username) }}">
-        <img src="{{ review.user.avatar(36) }}">
+      <img src="{{ review.user.avatar(36) }}">
     </a>
-    {% else %} <!--show book cover-->
-        {% set book_url = ["http://covers.openlibrary.org/b/isbn/", review.books4.isbn, "-S.jpg"] %}
-        <a href="{{ url_for('book', isbn=review.books4.isbn) }}">
-            <img src="{{ book_url|join }}">
-        </a>
-    {% endif %}
+  {% else %} <!--show book cover-->
+    {% set book_url = ["http://covers.openlibrary.org/b/isbn/", review.books.isbn, "-S.jpg"] %}
+    <a href="{{ url_for('book', isbn=review.books.isbn) }}">
+      <img src="{{ book_url|join }}">
+    </a>
+  {% endif %}
 </span>
 <div class="media-body">
-    <blockquote>
-        {% for i in range(5) %}
-            {% if i < review.rating %} 
-                <span class="fa fa-star checked"></span>
-            {% else %}
-                <span class="fa fa-star unchecked"></span>
-            {% endif %}
-        {% endfor %}
-        {% if onUserPage %} 
-        <a href="{{ url_for('book', isbn=review.books4.isbn) }}">
-            <h4>{{ review.books4.title }}</h4>
-        </a>
-        {% endif %}
-        <p>"{{ review.body }}"</p>
-        {% if onBookPage %}
-            <footer>   
-                <a href="{{ url_for('user', username=review.user.username) }}">
-                    {{ review.user.username }}
-                </a>           
-            </footer>
-        {% endif %}
-    </blockquote>
+  <blockquote>
+    {% for i in range(5) %}
+      {% if i < review.rating %} 
+        <span class="fa fa-star checked"></span>
+      {% else %}
+        <span class="fa fa-star unchecked"></span>
+      {% endif %}
+    {% endfor %}
+    {% if onUserPage %} 
+      <a href="{{ url_for('book', isbn=review.books.isbn) }}">
+        <h4>{{ review.books.title }}</h4>
+      </a>
+    {% endif %}
+    <p>"{{ review.body }}"</p>
+    {% if onBookPage %}
+      <footer>   
+        <a href="{{ url_for('user', username=review.user.username) }}">
+          {{ review.user.username }}
+        </a>           
+      </footer>
+    {% endif %}
+  </blockquote>
 </div>
 

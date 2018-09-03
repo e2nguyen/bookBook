@@ -3,21 +3,23 @@
 <!--Uses variables: user, posts-->
 {% block content %}
 <div class="media user">
-    <span class="media-left">
-        <img src="{{ user.avatar(128) }}">
-    </span>
-    <div class="media-body">
-        <h1>{{ user.username }}</h1>
-    </div>
+  <span class="media-left">
+    <img src="{{ user.avatar(128) }}">
+  </span>
+  <div class="media-body">
+    <h1>{{ user.username }}</h1>
+  </div>
 </div>
 <hr>
 <div class="media review">
-    <h3>Your Reviews:</h3>
+  <h3>Your Reviews:</h3>
+  {% if reviews %}
     {% set onUserPage = True %}
     {% for review in reviews %}
-        {% include '_review.html' %}
-    {% else %}
-        <p>No reviews yet!</p>
+      {% include '_review.html' %}
     {% endfor %}
+  {% else %}
+    <p>No reviews yet!</p>
+  {% endif %}
 </div>
 {% endblock %}

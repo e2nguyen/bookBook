@@ -3,32 +3,34 @@
 <!--Uses variables: book, reviews, rating, num_ratings-->
 {% block content %}
 <div class="media book">
-    {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
-    <span class="media-left">
-        <img src="{{ book_url|join }}">
-    </span>
-    <div class="media-body">
-        <h1>{{ book.title }}</h1>
-        <h3>by {{ book.author }}</h3> 
-        <p>Publication Year: {{ book.year }} </p>
-        <p>ISBN: {{ book.isbn }} </p>   
-        <p>Average Rating (out of {{ num_ratings }}): {{ rating }} </p>
-    </div>
+  {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
+  <span class="media-left">
+    <img src="{{ book_url|join }}">
+  </span>
+  <div class="media-body">
+    <h1>{{ book.title }}</h1>
+    <h3>by {{ book.author }}</h3> 
+    <p>Publication Year: {{ book.year }} </p>
+    <p>ISBN: {{ book.isbn }} </p>   
+    <p>Average Rating (out of {{ num_ratings }}): {{ rating }} </p>
+  </div>
 </div>
 <hr>
 
 <div class="media review">
-    <h3>Reviews</h3>
+  <h3>Reviews</h3>
+  {% if reviews %}
     {% set onBookPage = True %}
     {% for review in reviews %}
-        {% include '_review.html' %}
-    {% else %}
-        <p>Be the first to review this book!</p>
+      {% include '_review.html' %}
     {% endfor %}
+  {% else %}
+    <p>Be the first to review this book!</p>
+  {% endif %}
 </div>
 <hr>
 <div class="review-form">
-    <h3>Write Your Own Review, Bitch: </h3>
-    {% include '_reviewForm.html' %}
+  <h3>Write Your Own Review, Bitch: </h3>
+  {% include '_reviewForm.html' %}
 </div>
 {% endblock %}

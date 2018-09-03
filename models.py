@@ -33,21 +33,21 @@ def load_user(id):
   return User.query.get(int(id))
 
 class Book(Base):
-  __tablename__ = 'books4'
+  __tablename__ = 'books'
   id = Column(Integer, primary_key=True)
   isbn = Column(String(20))
   title = Column(String(100))
   author = Column(String(100))
   year = Column(String(4))
-  reviews = relationship('Review', backref='books4', lazy='dynamic')
+  reviews = relationship('Review', backref='books', lazy='dynamic')
 
   def __repr__(self):
     return '<title: {}, author: {}>'.format(self.title, self.author)
 
 class Review(Base):
-  __tablename__='reviewsInt'
+  __tablename__='reviews'
   id = Column(Integer, primary_key=True)
   rating = Column(Integer)
   body = Column(String(500))
   user_id = Column(Integer, ForeignKey('users.id'))
-  book_id = Column(Integer, ForeignKey('books4.id'))
+  book_id = Column(Integer, ForeignKey('books.id'))
