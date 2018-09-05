@@ -5,7 +5,7 @@
         <div class="rating">
             {% for star in form.rating | reverse %}   
                 {{ star }}  
-                {{ star.label(class="radio-inline") }}
+                {{ star.label }}
             {% endfor %}
         </div>
         {% for error in form.rating.errors %}
