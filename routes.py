@@ -1,6 +1,6 @@
 import requests
 
-from flask import flash, jsonify, make_response, render_template, redirect, request, url_for, abort 
+from flask import flash, jsonify, make_response, render_template, redirect, request, session, url_for, abort 
 from application import app, db
 from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
@@ -12,6 +12,7 @@ import json
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+  # session.permanent = True
   if current_user.is_authenticated:
     if request.method == 'POST':
       search_input = request.form.get("Search")
@@ -37,7 +38,6 @@ def index():
       else:
         return render_template('index.html', title='Home', books=books)
   return render_template('index.html', title='Home', books=None)
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

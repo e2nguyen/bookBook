@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, session
 from config import Config
+from datetime import timedelta
 from flask_login import LoginManager
 from flask_session import Session
 from sqlalchemy import create_engine, MetaData
@@ -18,9 +19,10 @@ login.login_view = 'login'
 if not os.getenv("DATABASE_URL"):
   raise RuntimeError("DATABASE_URL is not set")
 
-# Configure session to use filesystem
-app.config["SESSION_PERMANENT"] = False
+# Configure session to use filesystem and to timeout after x minutes
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
 app.config.from_object(Config)
 Session(app)
 
