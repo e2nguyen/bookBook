@@ -20,6 +20,7 @@
         <span class="fa fa-star unchecked"></span>
       {% endif %}
     {% endfor %}
+    <div id="date">{{ review.date }}</div>
     {% if onUserPage %} 
       <a href="{{ url_for('book', isbn=review.books.isbn) }}">
         <h4>{{ review.books.title }}</h4>
