@@ -23,6 +23,10 @@ input[type=submit] {
   border: 3.3px solid rgba(0,0,0, 35%);
 }
 
+input#email {
+  width: 260px;
+}
+
 .welcome, .login, .index {
   text-align: center;
 }
@@ -36,10 +40,13 @@ h2.welcome {
   margin: 0 auto;
 }
 
+.register {
+  height: 370px!important;
+}
+
 .login {
   margin: 5% auto;
   height: 350px;
-  border-radius: 00px;
   width: 350px;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.4); 
