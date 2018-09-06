@@ -48,7 +48,7 @@ class Review(Base):
   __tablename__='reviews'
   id = Column(Integer, primary_key=True)
   rating = Column(Integer)
-  body = Column(String(500))
+  body = Column(String(5000))
   date = Column(String(10))
   user_id = Column(Integer, ForeignKey('users.id'))
   book_id = Column(Integer, ForeignKey('books.id'))
