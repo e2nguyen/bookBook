@@ -126,6 +126,8 @@ td {
 }
 
 blockquote {
+  background: white;
+  border-radius: 15px;
   color: lightskyblue;
   font-style: italic;
   border-left: none;
@@ -172,6 +174,7 @@ a {
 #padding {
   height: 18vh;
 }
+
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {

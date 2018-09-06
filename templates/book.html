@@ -23,6 +23,7 @@
     {% set onBookPage = True %}
     {% for review in reviews %}
       {% include '_review.html' %}
+      <div class="clear"></div>
     {% endfor %}
   {% else %}
     <p>Be the first to review this book!</p>
