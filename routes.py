@@ -6,6 +6,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from forms import * 
 from models import *
 from sqlalchemy import or_, and_, func
+from datetime import datetime
 import json
 
 @app.route('/', methods=['GET', 'POST'])
@@ -73,7 +74,7 @@ def login():
 
 
 @app.route('/logout')
-@login_required       # pecautionary step; shouldn't be necessary though bc
+@login_required       # pecautionary step; shouldn't be necessary though 
 def logout():
   logout_user()
   return redirect(url_for('index'))      
@@ -82,7 +83,6 @@ def logout():
 @app.route('/book/<isbn>', methods=['GET', 'POST']) 
 @login_required
 def book(isbn):
-
   # find first book that matches requested isbn
   book = Book.query.filter_by(isbn=isbn).first()
   if not book:
@@ -101,14 +101,16 @@ def book(isbn):
        flash("You already reviewed this book. Stop being a lil' bitch.")
     # if review doesn't exist yet, add the new one 
     else:
-      review = Review(rating=form.rating.data, body=form.body.data, 
+      review = Review(rating=form.rating.data, body=form.body.data,
+                      date=datetime.utcnow().strftime("%d-%m-%Y"), 
                       user_id=current_user.id, book_id=book.id)
       db.add(review)
       db.commit()
       flash("Thank you for your review, Big Bitch!")
   
   # get summed ratings from bookBook
-  ratings_BB = [rev.rating for rev in Review.query.filter_by(book_id=book.id).all()]  
+  ratings_BB = [rev.rating for rev in 
+                Review.query.filter_by(book_id=book.id).all()]  
   sum_ratings_BB = sum(ratings_BB)
 
   # request data for this isbn from goodreads api
@@ -127,10 +129,11 @@ def book(isbn):
 
   # calculate average rating across goodreads anad bookBook              
   total_ratings = num_ratings_GR + len(ratings_BB)
-  avg_rating = round((((avg_rating_GR * num_ratings_GR) + sum_ratings_BB)/total_ratings), 2)
+  avg_rating = round((((avg_rating_GR * num_ratings_GR) + 
+                        sum_ratings_BB)/total_ratings), 2)
      
   return render_template('book.html', book=book, reviews=book.reviews[::-1],
-                          form=form, rating=avg_rating, num_ratings= total_ratings)
+                          form=form, rating=avg_rating, num_ratings=total_ratings)
 
 
 # method for api access
@@ -143,7 +146,8 @@ def access(isbn):
     return jsonify({"error": "invalid isbn"}), 404
 
   # get summed ratings from bookBook
-  ratings_BB = [rev.rating for rev in Review.query.filter_by(book_id=book.id).all()]  
+  ratings_BB = [rev.rating for rev in 
+                Review.query.filter_by(book_id=book.id).all()]  
   sum_ratings_BB = sum(ratings_BB)
 
   # request data for this isbn from goodreads api
@@ -162,8 +166,8 @@ def access(isbn):
 
   # calculate average rating across goodreads anad bookBook              
   total_ratings = num_ratings_GR + len(ratings_BB)
-  avg_rating = round((((avg_rating_GR * num_ratings_GR) + sum_ratings_BB)/total_ratings), 2)
-
+  avg_rating = round((((avg_rating_GR * num_ratings_GR) + 
+                        sum_ratings_BB)/total_ratings), 2)
   return jsonify({
                 "title":  book.title,
                 "author": book.author,
