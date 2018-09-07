@@ -25,7 +25,7 @@
         <h4>{{ review.books.title }}</h4>
       </a>
     {% endif %}
-    <p>"{{ review.body }}"</p>
+    <p class="more">"{{ review.body }}"</p>
     {% if onBookPage %}
       <footer>   
         <a href="{{ url_for('user', username=review.user.username) }}">

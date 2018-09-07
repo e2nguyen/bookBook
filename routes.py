@@ -39,6 +39,7 @@ def index():
         return render_template('index.html', title='Home', books=books)
   return render_template('index.html', title='Home', books=None)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
   if current_user.is_authenticated:

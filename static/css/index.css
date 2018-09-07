@@ -23,8 +23,21 @@ input[type=submit] {
   border: 3.3px solid rgba(0,0,0, 35%);
 }
 
+.review-form input[type=submit] {
+  color: rgba(0, 0, 0, 0.4);
+}
+
 input#email {
   width: 260px;
+}
+
+/* New eview text box should adjust according to screen size */
+textarea {
+	min-height: 10em;
+	max-height: 50vh;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 5px;
 }
 
 .welcome, .login, .index {
@@ -71,7 +84,7 @@ input[name="Search"] {
 }
 
 .book img{
-  padding: 25px;
+  padding: 0px 25px;
 }
 
 .rating {
@@ -128,6 +141,7 @@ td {
   padding: 10px;
 }
 
+/* Use if you need block to appear on next line */
 .clear { 
   clear: both; 
 }
@@ -158,6 +172,7 @@ blockquote h4 {
   padding: .25% 3%;
 }
 
+/* Links will inherit styling from their parent class */
 a { 
   color: inherit; 
 } 
@@ -166,14 +181,17 @@ a {
   padding: .25% 3%;
 }
 
+/* Used for star ratings */
 .checked {
   color: orange;
 }
 
+/* Used for star ratings*/
 .unchecked {
   color: black;
 }
 
+/* Star icon*/
 .fa-star {
   font-size: 15px;
 }
@@ -182,6 +200,23 @@ a {
   height: 18vh;
 }
 
+/* If review is too long, the "moretext" will be hidden until clicking "Read more" */
+.moretext span {
+  display: none;
+}
+
+/* "Read more" link */
+.link {
+  text-decoration: underline;
+}
+
+/* Book info should go to under image on small screens */
+@media only screen and (max-width: 480px) {
+  .book .media-body {
+    display: block;
+    padding: 25px;
+  }  
+}
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
