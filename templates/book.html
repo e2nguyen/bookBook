@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-<!--Uses variables: book, reviews, rating, num_ratings-->
+<!--Uses variables: book, reviews, rating, num_ratings, summary-->
 {% block content %}
 <div class="media book">
   {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-M.jpg"] %}
@@ -10,9 +10,10 @@
   <div class="media-body">
     <h1>{{ book.title }}</h1>
     <h3>by {{ book.author }}</h3> 
-    <p>Publication Year: {{ book.year }} </p>
-    <p>ISBN: {{ book.isbn }} </p>   
-    <p>Average Rating (out of {{ num_ratings }}): {{ rating }} </p>
+    <p>Summary: {{ summary }}</p>
+    <p>Publication Year: {{ book.year }}</p>
+    <p>ISBN: {{ book.isbn }}</p>   
+    <p>Average Rating (out of {{ num_ratings }}): {{ rating }}</p>
   </div>
 </div>
 <hr>

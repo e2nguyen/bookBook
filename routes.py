@@ -131,9 +131,28 @@ def book(isbn):
   total_ratings = num_ratings_GR + len(ratings_BB)
   avg_rating = round((((avg_rating_GR * num_ratings_GR) + 
                         sum_ratings_BB)/total_ratings), 2)
-     
+  
+  # Get book summary from google books API
+  google_api = requests.get("https://www.googleapis.com/books/v1/volumes/?q=" 
+                            + "isbn:" + isbn 
+                            + "&key=AIzaSyCQq78hfnGQDacarWCJ2qOC_Ec0-eKvcyc")
+  
+  if google_api.status_code != 200:
+    raise Exception('ERROR: API request unsuccessful.')
+  
+  data_G = google_api.json()
+
+  # check if the google api has the book description
+  if ('items' not in data_G 
+      or 'volumeInfo' not in data_G['items'][0] 
+      or 'description' not in data_G['items'][0]['volumeInfo']):
+    summary = "No summary available."
+  # if description exist, extract it 
+  else: 
+    summary = data_G['items'][0]['volumeInfo']['description']                   
+
   return render_template('book.html', book=book, reviews=book.reviews[::-1],
-                          form=form, rating=avg_rating, num_ratings=total_ratings)
+                          form=form, rating=avg_rating, num_ratings=total_ratings, summary=summary)
 
 
 # method for api access
