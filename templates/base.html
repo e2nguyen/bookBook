@@ -14,6 +14,37 @@
 
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+  <script>
+  $(document).ready(function() {
+    var nInitialCount = 250; //Intial characters to display
+    var ellipsestext = "...";
+    var moretext = "Read more";
+    var lesstext = "Read less";
+
+    $('.more').each(function() {
+      var paraText = $(this).html();
+      if (paraText.length > nInitialCount) {
+        var sText = paraText.substr(0, nInitialCount);
+        var eText = paraText.substr(nInitialCount, paraText.length - nInitialCount);
+        var newHtml = sText + '<span class="moreellipses">' + ellipsestext + '&nbsp;</span><span class="moretext"><span>' + eText + '</span>&nbsp;&nbsp;<a href="" class="link">' + moretext + '</a></span>';
+        $(this).html(newHtml);
+      }
+    });
+
+    $(".link").click(function(){
+        if ($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+  });    
+  </script>
     {% if title %}
       <title>bookBook: {{ title }}</title>
     {% else %}

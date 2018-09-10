@@ -40,6 +40,7 @@ def index():
         return render_template('index.html', title='Home', books=books)
   return render_template('index.html', title='Home', books=None)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
   if current_user.is_authenticated:
@@ -101,7 +102,7 @@ def book(isbn):
     # if review doesn't exist yet, add the new one 
     else:
       review = Review(rating=form.rating.data, body=form.body.data,
-                      date=datetime.utcnow().strftime("%d-%m-%Y"), 
+                      date=datetime.utcnow().strftime("%m-%d-%Y"), 
                       user_id=current_user.id, book_id=book.id)
       db.add(review)
       db.commit()
