@@ -1,15 +1,21 @@
 <!--Uses variables: book-->
 
 <tr>
-    <td>
-        {% set book_url = ["http://covers.openlibrary.org/b/isbn/", book.isbn, "-S.jpg"] %}
-        <a href="{{ url_for('book', isbn=book.isbn) }}">
-            <img src="{{ book_url|join }}">  
-        </a>
-    </td>    
-    <td>
-        <a href="{{ url_for('book', isbn=book.isbn) }}">
-            {{ book.title }} by {{ book.author }} ({{ book.isbn }})
-        </a>
-    </td>
+  <td>
+    {% set book_url = "http://covers.openlibrary.org/b/isbn/" + book.isbn 
+                      + "-S.jpg" + "?default=false" %}
+    <a href="{{ url_for('book', isbn=book.isbn) }}">
+      {% if book_url == 404 %}
+        <img src="../static/images/error-bubble.png" style="width: 40px;"/>
+      {% else %}
+        <!--img src="../static/images/error-bubble.png"/-->
+        <img src="{{ book_url }}">
+      {% endif %}
+    </a>
+  </td>    
+  <td>
+    <a>
+      {{ book.title }} by {{ book.author }} ({{ book.isbn }})
+    </a>
+  </td>
 </tr>
