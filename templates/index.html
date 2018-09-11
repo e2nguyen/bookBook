@@ -8,7 +8,6 @@
     <h1 class="welcome">Hi, {{ current_user.username }}, let's look for a book together!</h1>
     <h2 class="welcome">Hi, {{ current_user.username }}, let's look for a book together!</h2>
     {% endif %}
-
     <br>
     <div class="index">
       <form method="post" action="" class="form-inline" name="search">
@@ -18,12 +17,27 @@
       {% if books %}
         <hr>
         <h3 id="did-you-mean">Did you mean...</h3>
-        <table>
-        {% for book in books %}
-          {% include '_bookTeaser.html' %}
-        {% endfor %}
+        <table id="bookTable" class="display" style="width: 100%;">
+          <thead>
+            <tr>
+              <td>book</td>
+              <td>title</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in books %}
+              {% include '_bookTeaser.html' %}
+            {% endfor %}
+          </tbody>
         </table>
       {% endif %}
     </div>
   </div>
+<script>
+
+$(document).ready( function () {
+    $('#bookTable').DataTable();
+} );
+
+</script>
 {% endblock %}
