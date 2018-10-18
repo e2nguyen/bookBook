@@ -98,7 +98,7 @@ def book(isbn):
 
     # if review exists already, call them a lil bitch
     if existing_review:
-       flash("You already reviewed this book. Stop being a lil' bitch.")
+       flash("You already reviewed this book.")
     # if review doesn't exist yet, add the new one 
     else:
       review = Review(rating=form.rating.data, body=form.body.data,
@@ -106,7 +106,7 @@ def book(isbn):
                       user_id=current_user.id, book_id=book.id)
       db.add(review)
       db.commit()
-      flash("Thank you for your review, Big Bitch!")
+      flash("Thank you for your review!")
   
   # get summed ratings from bookBook
   ratings_BB = [rev.rating for rev in 
