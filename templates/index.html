@@ -10,18 +10,21 @@
     {% endif %}
     <br>
     <div class="index">
+      {% if not books %}
       <form method="post" action="" class="form-inline" name="search">
         <input id="Search" name="Search" list="book-search" class="form-control input-lg" type="text" placeholder="Enter the title, ISBN, or author" title="Search"> 
         <span><button class="fa fa-search" aria-hidden="true"></button></span>
       </form>
-      {% if books %}
+      {% else %}
         <hr>
         <h3 id="did-you-mean">Did you mean...</h3>
         <table id="bookTable" class="display" style="width: 100%;">
           <thead>
             <tr>
-              <td>book</td>
+              <td>cover</td>
               <td>title</td>
+              <td>author</td>
+              <td>isbn</td>
             </tr>
           </thead>
           <tbody>
