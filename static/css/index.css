@@ -141,6 +141,10 @@ td {
   padding: 10px;
 }
 
+.media-body {
+  padding: 0% 5% 0% 0%;
+}
+
 /* Use if you need block to appear on next line */
 .clear { 
   clear: both; 
@@ -208,6 +212,10 @@ a {
 /* "Read more" link */
 .link {
   text-decoration: underline;
+}
+
+.dataTables_wrapper {
+  padding: 3%
 }
 
 /* Book info should go to under image on small screens */

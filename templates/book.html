@@ -10,10 +10,10 @@
   <div class="media-body">
     <h1>{{ book.title }}</h1>
     <h3>by {{ book.author }}</h3> 
-    <p>Summary: {{ summary }}</p>
-    <p>Publication Year: {{ book.year }}</p>
-    <p>ISBN: {{ book.isbn }}</p>   
-    <p>Average Rating (out of {{ num_ratings }}): {{ rating }}</p>
+    <p>{{ summary }}</p>
+    <p><b>Publication Year:</b> {{ book.year }}</p>
+    <p><b>ISBN:</b> {{ book.isbn }}</p>   
+    <p><b>Average Rating (out of {{ num_ratings }}):</b> {{ rating }}</p>
   </div>
 </div>
 <hr>
